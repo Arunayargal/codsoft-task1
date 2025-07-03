@@ -1,0 +1,70 @@
+todo_list = []
+
+def show_menu():
+    print("\n--- To-Do List Menu ---")
+    print("1. View Tasks")
+    print("2. Add Task")
+    print("3. Remove Task")
+    print("4. Save to File")
+    print("5. Load from File")
+    print("6. Exit")
+
+def view_tasks():
+    if not todo_list:
+        print("No tasks found.")
+    else:
+        print("\nYour Tasks:")
+        for i, task in enumerate(todo_list, start=1):
+            print(f"{i}. {task}")
+
+def add_task():
+    task = input("Enter the task: ")
+    todo_list.append(task)
+    print("Task added successfully!")
+
+def remove_task():
+    view_tasks()
+    try:
+        task_num = int(input("Enter the task number to remove: "))
+        if 1 <= task_num <= len(todo_list):
+            removed = todo_list.pop(task_num - 1)
+            print(f"Removed task: {removed}")
+        else:
+            print("Invalid task number.")
+    except ValueError:
+        print("Please enter a valid number.")
+
+def save_to_file():
+    with open("todo.txt", "w") as file:
+        for task in todo_list:
+            file.write(task + "\n")
+    print("Tasks saved to todo.txt")
+
+def load_from_file():
+    try:
+        with open("todo.txt", "r") as file:
+            tasks = file.readlines()
+            global todo_list
+            todo_list = [task.strip() for task in tasks]
+            print("Tasks loaded from todo.txt")
+    except FileNotFoundError:
+        print("No saved file found.")
+
+while True:
+    show_menu()
+    choice = input("Enter your choice (1-6): ")
+    if choice == "1":
+        view_tasks()
+    elif choice == "2":
+        add_task()
+    elif choice == "3":
+        remove_task()
+    elif choice == "4":
+        save_to_file()
+    elif choice == "5":
+        load_from_file()
+    elif choice == "6":
+        print("Exiting To-Do List. Goodbye!")
+        break
+    else:
+        print("Invalid choice. Please try again.")
